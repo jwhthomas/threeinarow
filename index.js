@@ -1,10 +1,12 @@
 const container = document.getElementById("container");
 
-var holdingList = [
-    ["X", "O", "O"],
-    ["O", "X", "X"],
-    ["X", "O", "X"],
-];
+// var holdingList = [
+//     ["X", "O", "O"],
+//     ["O", "X", "X"],
+//     ["X", "O", "X"],
+// ];
+
+var holdingList = [[], [], []];
 
 // Creates the three rows
 for (let i = 0; i < 3; i++) {
@@ -16,7 +18,8 @@ for (let i = 0; i < 3; i++) {
         box.className = "bg-slate-200 h-48 w-48 mx-2 text-6xl flex items-center justify-center cursor-pointer"
         box.id = `r${i}b${j}`
         box.innerHTML = box.id
-        // box.onclick = myFunkyFunction
+        // When the box is clicked, it calls this function and passes the box's id
+        box.onclick = boxClicked(box.id)
         row.appendChild(box)   
     }
     container.appendChild(row)
@@ -35,10 +38,10 @@ function getDetailsFromString(string){
     return data
 }
 
+// This function updates all the boxes to show to values held in the list.
 function updateScreen(){
     holdingList.forEach((row, i) => {
         row.forEach((box, j) => {
-            // console.log(box)
             getBox(i, j).innerHTML = box
         })
     })
