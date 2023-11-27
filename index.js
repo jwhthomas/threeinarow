@@ -1,14 +1,14 @@
 const container = document.getElementById("container");
 
-var holdingList = [
-    ["X", "O", "X"],
-    ["O", "X", "X"],
-    ["X", "O", "X"],
-];
+// var holdingList = [
+//     ["X", "O", "X"],
+//     ["O", "X", "X"],
+//     ["X", "O", "X"],
+// ];
 
 var playerTurn = 1;
 
-// var holdingList = [[], [], []];
+var holdingList = [[], [], []];
 
 // Creates the three rows
 for (let i = 0; i < 3; i++) {
@@ -83,23 +83,23 @@ function checkWinner(){
     for (let i = 0; i < 3; i++) {
         // Gets a row from the holding list and checks if all values in it are the same
         if(holdingList[i][0] === holdingList[i][1] && holdingList[i][1] === holdingList[i][2]){
-            console.log("WINNER IN ROW"+i)
+            return console.log("WINNER IN ROW"+i)
         }
 
         // Gets the columns in the holding list and checks if the values are all the same
         if(holdingList[0][i] === holdingList[1][i] && holdingList[1][i] === holdingList[2][i]){
-            console.log("WINNER IN COL"+i)
+            return console.log("WINNER IN COL"+i)
         }
         
     }
 
     // Check diagonal top left to bottom right
     if(holdingList[0][0] === holdingList[1][1] && holdingList[1][1] === holdingList[2][2]){
-        console.log("WINNER DIAG TL BR")
+        return console.log("WINNER DIAG TL BR")
     }
 
     // Check diagonal bottom left to top right
     if(holdingList[2][0] === holdingList[1][1] && holdingList[1][1] === holdingList[0][2]){
-        console.log("WINNER DIAG BL TR")
+        return console.log("WINNER DIAG BL TR")
     }
 }
