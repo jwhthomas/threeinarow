@@ -1,10 +1,13 @@
-const container = document.getElementById("container");
+// Gets the data about players from the previous page
+const urlData = new URLSearchParams(window.location.search)
 
-// var holdingList = [
-//     ["X", "O", "X"],
-//     ["O", "X", "X"],
-//     ["X", "O", "X"],
-// ];
+// If there is no player information, send the user to input it
+if(!urlData.has("player1") || !urlData.has("player2")){
+    window.location.replace("/")
+}
+
+
+const container = document.getElementById("container");
 
 var playerTurn = 1;
 
@@ -42,16 +45,6 @@ function getDetailsFromString(string){
     return data
 }
 
-// // This function updates all the boxes to show to values held in the list.
-// function updateScreen(){
-//     holdingList.forEach((row, i) => {
-//         row.forEach((box, j) => {
-//             getBox(i, j).innerHTML = box
-//         })
-//     })
-//     return true
-// }
-
 function boxClicked(boxID){
     const box = document.getElementById(boxID)
     const boxData = getDetailsFromString(boxID)
@@ -61,6 +54,7 @@ function boxClicked(boxID){
         box.innerHTML = "X"
         // Prevent users from being able to click that box again
         box.onclick = null
+        box.classList.remove("cursor-pointer")
         // Update the list values 
         holdingList[boxData.row][boxData.box] = "X"
         // Switch to the next player
@@ -70,6 +64,7 @@ function boxClicked(boxID){
         box.innerHTML = "O"
         // Prevent users from being able to click that box again
         box.onclick = null
+        box.classList.remove("cursor-pointer")
         // Update the list values
         holdingList[boxData.row][boxData.box] = "O"
         // Switch to the next player
@@ -81,13 +76,18 @@ function boxClicked(boxID){
 function checkWinner(){
     // Check for three in a row
     for (let i = 0; i < 3; i++) {
+
         // Gets a row from the holding list and checks if all values in it are the same
         if(holdingList[i][0] === holdingList[i][1] && holdingList[i][1] === holdingList[i][2]){
+            // Ensure that it cannot be marked as correct if there is a row of empty boxes by checking to make sure one of them has text
+            if(!holdingList[i][0]) return
             return console.log("WINNER IN ROW"+i)
         }
 
         // Gets the columns in the holding list and checks if the values are all the same
         if(holdingList[0][i] === holdingList[1][i] && holdingList[1][i] === holdingList[2][i]){
+            // Ensure that it cannot be marked as correct if there is a row of empty boxes by checking to make sure one of them has text
+            if(!holdingList[0][i]) return
             return console.log("WINNER IN COL"+i)
         }
         
@@ -95,11 +95,15 @@ function checkWinner(){
 
     // Check diagonal top left to bottom right
     if(holdingList[0][0] === holdingList[1][1] && holdingList[1][1] === holdingList[2][2]){
+        // Ensure that it cannot be marked as correct if there is a row of empty boxes by checking to make sure one of them has text
+        if(!holdingList[0][0]) return
         return console.log("WINNER DIAG TL BR")
     }
 
     // Check diagonal bottom left to top right
     if(holdingList[2][0] === holdingList[1][1] && holdingList[1][1] === holdingList[0][2]){
+        // Ensure that it cannot be marked as correct if there is a row of empty boxes by checking to make sure one of them has text
+        if(!holdingList[1][1]) return
         return console.log("WINNER DIAG BL TR")
     }
 }
