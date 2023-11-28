@@ -6,10 +6,13 @@ if(!urlData.has("player1") || !urlData.has("player2")){
     window.location.replace("/")
 }
 
+const playerData = [null, urlData.get("player1"), urlData.get("player2")]
 
 const container = document.getElementById("container");
+const playerTurnDisplay = document.getElementById("turnDisplay");
 
 var playerTurn = 1;
+playerTurnDisplay.innerHTML = `It's your turn, ${playerData[playerTurn]}`
 
 var holdingList = [[], [], []];
 
@@ -70,6 +73,7 @@ function boxClicked(boxID){
         // Switch to the next player
         playerTurn -= 1
     }
+    playerTurnDisplay.innerHTML = `It's your turn, ${playerData[playerTurn]}`
     checkWinner()
 }
 
@@ -80,15 +84,15 @@ function checkWinner(){
         // Gets a row from the holding list and checks if all values in it are the same
         if(holdingList[i][0] === holdingList[i][1] && holdingList[i][1] === holdingList[i][2]){
             // Ensure that it cannot be marked as correct if there is a row of empty boxes by checking to make sure one of them has text
-            if(!holdingList[i][0]) return
-            return console.log("WINNER IN ROW"+i)
+            if(!holdingList[i][0]) continue
+            return win("row", i)
         }
 
         // Gets the columns in the holding list and checks if the values are all the same
         if(holdingList[0][i] === holdingList[1][i] && holdingList[1][i] === holdingList[2][i]){
             // Ensure that it cannot be marked as correct if there is a row of empty boxes by checking to make sure one of them has text
-            if(!holdingList[0][i]) return
-            return console.log("WINNER IN COL"+i)
+            if(!holdingList[0][i]) continue
+            return win("column", i)
         }
         
     }
@@ -97,13 +101,68 @@ function checkWinner(){
     if(holdingList[0][0] === holdingList[1][1] && holdingList[1][1] === holdingList[2][2]){
         // Ensure that it cannot be marked as correct if there is a row of empty boxes by checking to make sure one of them has text
         if(!holdingList[0][0]) return
-        return console.log("WINNER DIAG TL BR")
+        return win("diagonal", 0)
     }
 
     // Check diagonal bottom left to top right
     if(holdingList[2][0] === holdingList[1][1] && holdingList[1][1] === holdingList[0][2]){
         // Ensure that it cannot be marked as correct if there is a row of empty boxes by checking to make sure one of them has text
         if(!holdingList[1][1]) return
-        return console.log("WINNER DIAG BL TR")
+        return win("diagonal", 1)
     }
+}
+
+function win(inWhat, where){
+    var winner = 0
+    if(inWhat === "row"){
+        if(holdingList[where][0] === "X"){
+            winner = 1
+        }else{
+            winner = 2
+        }
+        for (let i = 0; i < 3; i++) {
+            document.getElementById(`r${where}b${i}`).classList.replace("bg-slate-200", "bg-yellow-200")
+        }
+    }
+
+    if(inWhat === "column"){
+        if(holdingList[0][where] === "X"){
+            winner = 1
+        }else{
+            winner = 2
+        }
+        for (let i = 0; i < 3; i++) {
+            document.getElementById(`r${i}b${where}`).classList.replace("bg-slate-200", "bg-yellow-200")
+        }
+    }
+
+    if(inWhat === "diagonal"){
+        if(holdingList[1][1] === "X"){
+            winner = 1
+        }else{
+            winner = 2
+        }
+        if(where === 0){
+            document.getElementById(`r0b0`).classList.replace("bg-slate-200", "bg-yellow-200")
+            document.getElementById(`r1b1`).classList.replace("bg-slate-200", "bg-yellow-200")
+            document.getElementById(`r2b2`).classList.replace("bg-slate-200", "bg-yellow-200")
+        }
+        if(where === 1){
+            document.getElementById(`r2b0`).classList.replace("bg-slate-200", "bg-yellow-200")
+            document.getElementById(`r1b1`).classList.replace("bg-slate-200", "bg-yellow-200")
+            document.getElementById(`r0b2`).classList.replace("bg-slate-200", "bg-yellow-200")
+        }
+    }
+
+    playerTurnDisplay.innerHTML = `${playerData[winner]} has won!`
+
+    // Disable all the boxes to stop the game continuing
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            var box = document.getElementById(`r${i}b${j}`)
+            box.onclick = null
+            box.classList.remove("cursor-pointer")
+        }
+    }
+
 }
