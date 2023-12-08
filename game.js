@@ -154,7 +154,8 @@ function win(inWhat, where){
         }
     }
 
-    playerTurnDisplay.innerHTML = `${playerData[winner]} has won!`
+    playerTurnDisplay.innerHTML = `${playerData[winner]} has won! Click here to play again.`
+    playerTurnDisplay.onclick = () => {window.location.reload()}
 
     // Disable all the boxes to stop the game continuing
     for (let i = 0; i < 3; i++) {
