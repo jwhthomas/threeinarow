@@ -157,6 +157,10 @@ function win(inWhat, where){
     playerTurnDisplay.innerHTML = `${playerData[winner]} has won! Click here to play again.`
     playerTurnDisplay.classList.add("cursor-pointer")
     playerTurnDisplay.onclick = () => {window.location.reload()}
+    // FIREWORKS!!!
+    const container = document.getElementById("fireworks")
+    const fireworks = new Fireworks.default(container)
+    fireworks.start()
 
     // Disable all the boxes to stop the game continuing
     for (let i = 0; i < 3; i++) {
