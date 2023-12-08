@@ -2,7 +2,7 @@
 const urlData = new URLSearchParams(window.location.search)
 
 // If there is no player information, send the user to input it
-if(!urlData.has("player1") || !urlData.has("player2")){
+if((!urlData.has("player1") || !urlData.has("player2")) || (!urlData.get("player1") || !urlData.get("player2"))){
     window.location.replace("/")
 }
 
