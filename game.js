@@ -12,6 +12,7 @@ const container = document.getElementById("container");
 const playerTurnDisplay = document.getElementById("turnDisplay");
 
 var playerTurn = 1;
+var totalTurnsPlayed = 0;
 playerTurnDisplay.innerHTML = `It's your turn, ${playerData[playerTurn]}`
 
 var holdingList = [[], [], []];
@@ -49,6 +50,7 @@ function getDetailsFromString(string){
 }
 
 function boxClicked(boxID){
+    totalTurnsPlayed += 1;
     const box = document.getElementById(boxID)
     const boxData = getDetailsFromString(boxID)
 
@@ -109,6 +111,12 @@ function checkWinner(){
         // Ensure that it cannot be marked as correct if there is a row of empty boxes by checking to make sure one of them has text
         if(!holdingList[1][1]) return
         return win("diagonal", 1)
+    }
+    // Check if there is a draw
+    if(totalTurnsPlayed === 9){
+        playerTurnDisplay.innerHTML = `It's a draw! Click here to play again.`
+        playerTurnDisplay.classList.add("cursor-pointer")
+        playerTurnDisplay.onclick = () => {window.location.reload()}
     }
 }
 
